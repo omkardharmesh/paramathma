@@ -20,6 +20,7 @@ This file is short on purpose. Update when reality changes; do not let it grow.
 
 ## Done (Hermes Pilot)
 
+- **Hermes setup** — completed 2026-05-02. CLI verified at `Hermes Agent v0.12.0`; DeepSeek provider, Telegram gateway, workspace allowlist, and Curator are recorded in `HERMES.md`.
 - **Stale-doc reference map** (`task-packets/yawnly-20260502-stale-doc-reference-map.md`) — research-only completed 2026-05-02. Report: `inbox/hermes-proposals/archive/2026-05/yawnly-stale-doc-reference-map-20260502.md`.
 - **Bridge-thinning** (`task-packets/yawnly-20260502-bridge-thinning.md`) — implemented and merged 2026-05-02. `Yawnly/AGENTS.md` and `Yawnly/CLAUDE.md` now point at MyWiki via a wiki-first First Read Protocol. 6 stale doc references removed across 6 files. PR: [#15](https://github.com/omkardharmesh/YawnlyCMP/pull/15).
 
@@ -29,7 +30,7 @@ This file is short on purpose. Update when reality changes; do not let it grow.
 
 ## Blocked
 
-- Hermes pilot is gated on remaining wiki skeleton completion and Hermes install. Stale-doc research and bridge-thinning are now resolved.
+- _None recorded._
 
 ## Risks
 

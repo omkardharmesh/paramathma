@@ -45,7 +45,7 @@ ViewModel
 - **ApiService is transport-only.** No business decisions, no entitlement resolution, no retry/backoff policies, no cross-table orchestration.
 - **UseCase owns business rules.** Pure domain logic.
 - **RepositoryImpl owns data composition and mapping.** Map DTOs to domain. Coordinate sources. Keep transport details out of use cases.
-- **Retry / error strategy lives at the repository boundary** (e.g. an `executeSupabaseCall`-style helper), not in ApiService.
+- **Retry / error strategy lives at the repository boundary** (e.g. an `executeNetworkCall`-style helper), not in ApiService.
 
 Any violation above is a blocking architecture finding (P1) in code review.
 
@@ -60,7 +60,7 @@ Any violation above is a blocking architecture finding (P1) in code review.
 - Each feature owns `feature/<name>/di/<Feature>Module.kt`.
 - Bind interfaces to implementations. Use `viewModel { ... }` for ViewModels.
 - **Register every Koin module in both `KoinInit.android.kt` and `KoinInit.ios.kt`.** Missing one platform causes runtime DI failures.
-- The shared client singleton (e.g. Supabase) lives in a shared module (e.g. `sharedModule`).
+- Shared client singletons live in shared DI modules (e.g. `sharedModule`).
 
 ## Feature Folder Structure
 
@@ -68,7 +68,7 @@ Any violation above is a blocking architecture finding (P1) in code review.
 feature/<name>/
   data/
     dto/           # @Serializable + @SerialName + toDomain()
-    network/       # ApiService (Supabase or Ktor)
+    network/       # ApiService or transport adapter
     repository/    # *RepositoryImpl
   domain/
     model/         # plain data classes, no @Serializable
@@ -86,6 +86,8 @@ feature/<name>/
 
 Build order: domain → data → presentation → di → navigation.
 
+For full new-feature scaffolding rules, use `guidelines/frontend/cmp-feature-scaffold.md`.
+
 ## Core-to-Feature Rule
 
 `core/` provides infrastructure (DataStore, navigation primitives, base classes, theme tokens). It must remain feature-agnostic. If a core component needs a capability that a feature owns:
@@ -96,6 +98,13 @@ Build order: domain → data → presentation → di → navigation.
 ## Logging
 
 Use a multiplatform logger (e.g. `Napier`) in shared code. Never `println` in `commonMain`.
+
+## Testing
+
+- Prefer JVM host tests under `composeApp/src/androidHostTest/` for ViewModel/use-case behavior when the project supports them. These should not need a device or emulator.
+- Put multiplatform logic tests under `composeApp/src/commonTest/` when the code has no Android-only dependencies.
+- Test ViewModels through state and side-effect flows. Mock repositories or use cases at the layer boundary being tested.
+- When writing multiple related tests, write the test batch first, then run the relevant Gradle task and fix compile/runtime failures from actual output.
 
 ## Build Verification
 
@@ -115,6 +124,7 @@ iOS is verified by opening the Xcode project; Gradle runs in the Xcode build pha
 - **Do** keep `composeApp` as a KMP library and `androidApp` as the application entry point.
 - **Do** put new code in `commonMain` unless platform `expect/actual` is genuinely required.
 - **Do** map DTO → domain at the repository boundary.
+- **Do** keep platform APIs behind `expect`/`actual` or injected platform services.
 - **Don't** import `data` or `presentation` types from `domain`.
 - **Don't** put business rules in ApiService or in the UI layer.
 - **Don't** modify shared base infrastructure (`BaseViewModel`, base repositories, theme/core) inside a feature task — extend instead.
