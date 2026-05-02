@@ -28,6 +28,7 @@ Agents must not recursively load the wiki. See `meta/wikiignore.md`.
 
 ### Frontend
 - [Compose Multiplatform architecture](guidelines/frontend/compose-multiplatform.md)
+- [CMP feature scaffold](guidelines/frontend/cmp-feature-scaffold.md)
 - [Compose UI conventions](guidelines/frontend/compose-ui.md)
 
 ### Backend
@@ -36,6 +37,8 @@ Agents must not recursively load the wiki. See `meta/wikiignore.md`.
 
 ### Agents
 - [Hermes delegation](guidelines/agents/hermes-delegation.md)
+- [Spec workflow](guidelines/agents/spec-workflow.md)
+- [CMP PR review](guidelines/agents/cmp-pr-review.md)
 
 ## Schemas
 

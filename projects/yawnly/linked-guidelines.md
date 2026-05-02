@@ -12,9 +12,18 @@ updated: 2026-05-02
 
 - `guidelines/agents/hermes-delegation.md`
 
+## Read for substantial specs / task packets
+
+- `guidelines/agents/spec-workflow.md`
+
+## Read for review-only / PR work
+
+- `guidelines/agents/cmp-pr-review.md`
+
 ## Read for CMP / shared / Android work
 
 - `guidelines/frontend/compose-multiplatform.md`
+- `guidelines/frontend/cmp-feature-scaffold.md`
 - `guidelines/frontend/compose-ui.md`
 
 ## Read for backend / Supabase work
