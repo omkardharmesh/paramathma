@@ -16,7 +16,7 @@ Agents must not bulk-load:
 - generated reports copied into project folders (`graphify-out/`, `*-report.md` snapshots, etc.)
 - archived or stale pages (`status: archived`, `status: stale`)
 - task packets that are not linked from the current project's `task-packets/README.md` or `current-state.md`
-- the planning specs in MyWiki root (`llm-wiki-plan-v3.md`, `llm-wiki-v3-setup-*.md`, `hermes-installation-plan.md`) — they are seed inputs, not runtime context
+- `llm-wiki-plan-v3.md` at the wiki root — it is canonical strategy/seed input, not runtime context. Read only when reasoning about wiki structure itself.
 
 Agents may read ignored paths only when a task packet explicitly lists the path under `Required Context` or `Allowed Paths`.
 
