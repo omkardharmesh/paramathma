@@ -18,9 +18,9 @@ status: draft
 
 ## Summary
 
-- **Files in scope:** 6 (2 primary bridge files + 4 secondary cleanup files)
-- **Edits proposed:** 8 auto-edits + 2 flagged for human decision
-- **Lines that would change:** 11
+- **Files in scope:** 6
+- **Edits proposed:** 10 (all decided — 8 auto + 2 human-resolved)
+- **Lines that would change:** 13
 - **Files preserved untouched:** All Yawnly-specific sections (build commands, architecture gotchas, UI conventions, review gates, feature layout, do-not-touch list, Supabase project details)
 - **Verification:** Re-run 3 `rg` commands from the research report to confirm zero stale refs remain
 
@@ -193,47 +193,35 @@ See also: `CLAUDE.md`, `MyWiki/projects/yawnly/context.md`.
 
 ---
 
-## Human-Input-Needed (2 findings)
+## Human-Decided (resolved 2026-05-02)
 
-These findings require a human decision before editing. They are flagged here but excluded from the auto-edit scope.
+### H1 — `plan/v2/komodo/komodo_integration_impl_spec.md` line 41 ✅
 
-### H1 — `plan/v2/komodo/komodo_integration_impl_spec.md` line 41
+**Decision: Annotate as external.**
 
-**Context:**
+**Before (line 41):**
 ```
 The two reference docs (`komodo-app-integration-detailed.md` and `komodo_integration_spec.md`) describe a **complete 3-tier billing architecture** from another project that Yawnly must replicate:
 ```
 
-**Issue:** `komodo-app-integration-detailed.md` does not exist in the Yawnly repo (or the komodo directory). All komodo specs are marked IMPLEMENTED. This is a cross-project reference.
+**After:**
+```
+The reference doc (`komodo_integration_spec.md`) and an external spec from another project describe a **complete 3-tier billing architecture** that Yawnly must replicate:
+```
 
-**Options:**
-| Option | Edit |
-|---|---|
-| A — Annotate as external | `The reference doc (`komodo_integration_spec.md`) and an external spec from another project describe...` |
-| B — Delete the reference | `The reference doc (`komodo_integration_spec.md`) describes a **complete 3-tier billing architecture**...` |
-| C — Vendor the missing doc | Copy `komodo-app-integration-detailed.md` into the komodo directory (requires finding it first) |
+### H2 — `modal/impl.md` line 10 ✅
 
-**Recommendation: Option A** — the komodo specs are historical/archival; annotating preserves context without pretending the file exists.
+**Decision: Remove the outside-repo reference.**
 
----
-
-### H2 — `modal/impl.md` line 10
-
-**Context:**
+**Before (line 10):**
 ```
 Full Modal deployment scripts and voice configs are finalized in `/Users/eloelo/Downloads/Modal/TTS_INTEGRATION_DOC.md`.
 ```
 
-**Issue:** The referenced file exists but is **outside** the Yawnly repo. If Modal is an active sibling project, this is fine. If Modal is abandoned or the doc is irrelevant, the reference is noise.
-
-**Options:**
-| Option | Edit |
-|---|---|
-| A — Keep with annotation | `...finalized in \`/Users/eloelo/Downloads/Modal/TTS_INTEGRATION_DOC.md\` (external sibling project).` |
-| B — Remove | Replace with: `...finalized externally (contact the Modal project for details).` |
-| C — Copy inline | Summarize the relevant TTS config in `modal/impl.md` (likely out of scope for bridge-thinning) |
-
-**Recommendation: Option A** — the file exists and the reference is intentional (Modal is the TTS backend). The path is absolute and clear. Just annotate.
+**After:**
+```
+Full Modal deployment scripts and voice configs are finalized externally.
+```
 
 ---
 
@@ -308,11 +296,11 @@ Expected results:
 | `Yawnly/CLAUDE.md` | 14–26 (table row replaced + Read Order rewritten) | Boot sequence rewrite |
 | `Yawnly/docs/agent-architecture.md` | 5, 364, 365 | Stale ref removal + wiki pointers |
 | `Yawnly/plan/v2/pending/release-pending.md` | 5, 67 | Stale ref removal |
-| `Yawnly/plan/v2/komodo/komodo_integration_impl_spec.md` | 41 | **Deferred (H1)** |
-| `Yawnly/modal/impl.md` | 10 | **Deferred (H2)** |
+| `Yawnly/plan/v2/komodo/komodo_integration_impl_spec.md` | 41 | External annotation |
+| `Yawnly/modal/impl.md` | 10 | Outside-repo ref removed |
 
-**Total auto-edits: 8** across 4 files (11 lines changed).  
-**Deferred to human: 2** across 2 files.
+**Total edits: 10** across 6 files (13 lines changed).
+**All decided** — 8 auto + 2 human-resolved (komodo annotated external, Modal ref removed).
 
 ---
 
