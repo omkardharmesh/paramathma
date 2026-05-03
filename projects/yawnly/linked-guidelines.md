@@ -3,7 +3,7 @@ title: Yawnly Linked Guidelines
 summary: Exact global guidelines that apply to Yawnly.
 type: project-context
 status: canonical
-updated: 2026-05-02
+updated: 2026-05-03
 ---
 
 # Yawnly — Linked Guidelines
@@ -30,6 +30,12 @@ updated: 2026-05-02
 
 - `guidelines/backend/supabase.md`
 - `guidelines/backend/supabase-edge-functions.md`
+
+## Read for Kokoros TTS integration
+
+- `projects/kokoros/context.md`
+- `projects/kokoros/current-state.md`
+- `projects/kokoros/linked-guidelines.md`
 
 ## Golden examples
 
