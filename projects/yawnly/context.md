@@ -3,7 +3,7 @@ title: Yawnly Project Context
 summary: CMP bedtime story app. Supabase backend. First Hermes pilot.
 type: project-context
 status: canonical
-updated: 2026-05-02
+updated: 2026-05-03
 ---
 
 # Yawnly — Project Context
@@ -82,6 +82,15 @@ First-time setup: copy `appkeys.properties.example` → `appkeys.properties` (gi
 - Backend code: `supabase/` (migrations + Edge Functions).
 - Keys: `appkeys.properties` (gitignored), accessed via BuildConfig.
 - Edge Functions present include OTP login, IAP verification, audio/story generation, payment webhooks. See `repo-map.md` for the current list.
+
+## External TTS / Kokoros
+
+- Kokoros is the self-hosted TTS service for Yawnly. See `projects/kokoros/context.md`.
+- Mobile clients must call Supabase Edge Functions, not Kokoros directly.
+- Supabase Edge Functions call `https://tts-hetzner.yawnly.org/v1/audio/speech`.
+- Required outbound header from Supabase to Kokoros: `X-Yawnly-TTS-Key`.
+- Supabase secret name for the raw header value: `HETZNER_TTS_PROXY_KEY`.
+- Never store the raw header value in MyWiki, git, app code, or chat.
 
 ## Current Release Status
 
