@@ -3,10 +3,14 @@ title: Kokoros Linked Guidelines
 summary: Exact global guidelines and source docs that apply to Kokoros work.
 type: project-context
 status: canonical
-updated: 2026-05-03
+updated: 2026-05-04
 ---
 
 # Kokoros — Linked Guidelines
+
+## Read For Requirements / Specs
+
+- `projects/kokoros/pre-gen-audio-requirements.md`
 
 ## Read For Any Kokoros Work
 

@@ -3,7 +3,7 @@ title: Yawnly Decisions
 summary: Project-local decision memory for Yawnly.
 type: decision-log
 status: canonical
-updated: 2026-05-02
+updated: 2026-05-04
 ---
 
 # Yawnly — Decisions
@@ -156,6 +156,46 @@ Rejected:
 
 Revisit:
 Only if a server outage requires a temporary, narrowly scoped client-side fallback — and then with explicit logging and reconciliation on next online session.
+
+---
+
+## D009: Locked Pricing — Two Tiers + Trial + Add-On Packs
+
+Status: accepted
+Date: 2026-05-04
+Scope: Yawnly
+
+Decision:
+Lock Yawnly pricing to two subscription tiers (₹33 and ₹99), a 3-day trial, and one-time add-on packs. No permanent free tier. No family/premium ladder at launch.
+
+- **Trial (not a tier):** 3-day, 10-15 personalised stories, 3 audio teaser credits, no credit card required, hard paywall after.
+- **₹33/month:** Unlimited text stories (soft limit 10/day) + 10 audio credits/month. Audio credits are the conversion lever — kid hooks on hearing their name, runs out mid-month, upgrade pressure to ₹99.
+- **₹99/month:** Everything in ₹33 + 60 pre-generated audio/day (2/day: 1 personalised + 1 mythology, cron at 2am IST) + 30 on-demand TTS requests/month + daily guardrail (3 on-demand/day).
+- **Add-on packs (no expiry):** +10 ₹29, +25 ₹59, +50 ₹99. All >95% margin.
+- **Upsell ₹33→₹99:** Google IAP `SubscriptionUpdateParams` with `IMMEDIATE_WITH_TIME_PRORATION`. Trigger at 8-10 credits used or day 15+ with 0 credits.
+- **Launch infra:** Hetzner CAX21 (₹1,100/mo, 4 vCPU ARM64 Ampere). Scale to CPX42 at ~350-400 users.
+- **Net economics:** ₹33 ~₹24/user, ₹99 ~₹69/user. Break-even ~30 paying users on CAX21.
+
+Why:
+- Two tiers = simple decision for parents, no analysis paralysis.
+- Trial → ₹33 → ₹99 is a natural conversion ladder. Trial hooks the kid, ₹33 builds the habit, ₹99 is full audio.
+- 10 audio credits in ₹33 cost ₹0.82/month — rounding error that powers the upsell engine.
+- CAX21 at ₹1,100/mo gives break-even at 30 users. Cheap enough to launch lean.
+- Google IAP handles proration natively — no custom billing logic needed.
+
+Rejected:
+- Permanent free tier (replaced with 3-day trial).
+- Family (₹179) and Premium (₹399 voice clone) tiers at launch — deferred.
+- 5-tier ladder from text-first thesis — too much choice complexity for MVP.
+- Unlimited on-demand TTS in ₹99 — caps at 30/month with add-on packs for overflow.
+- ₹33 with 0 or 5 audio credits — 0 removes product magic, 5 doesn't build enough habit.
+
+Revisit:
+- If trial-to-paid conversion < 20%, trial model needs rework.
+- If 10 audio credits in ₹33 satisfy users (upsell to ₹99 doesn't move), reduce to 5.
+- If CAX21 real performance significantly underperforms CPX32 bench estimate.
+- When paying users hit ~350-400, migrate to CPX42.
+- After 500 paying users, revisit Family/Premium ladder.
 
 ---
 
