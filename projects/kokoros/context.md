@@ -3,7 +3,7 @@ title: Kokoros Project Context
 summary: Self-hosted Kokoro TTS service on Hetzner, protected by Cloudflare and consumed through Supabase.
 type: project-context
 status: canonical
-updated: 2026-05-03
+updated: 2026-05-04
 ---
 
 # Kokoros — Project Context
@@ -51,6 +51,57 @@ Yawnly app
 - `POST /v1/audio/speech` generates audio.
 - Known model IDs include `tts-1`, `tts-1-hd`, `kokoro`, and `gpt-4o-mini-tts`.
 - Known voice examples include `af_bella`, `af_sky`, Hindi voices `hf_alpha`, `hf_beta`, `hm_omega`, and `hm_psi`.
+
+## Word-Level Timestamps (Native)
+
+Kokoro produces **word-level timing data** during synthesis via the ONNX inference pass. This is not exposed through the HTTP API but is available through the CLI.
+
+### Data structure
+
+```rust
+// kokoros/src/tts/koko.rs:27
+pub struct WordAlignment {
+    pub word: String,
+    pub start_sec: f32,
+    pub end_sec: f32,
+}
+```
+
+### CLI usage
+
+The `--timestamps` flag works with `Text` and `File` modes. It outputs a TSV sidecar alongside the WAV:
+
+```shell
+kokoros text --timestamps --lan en --style af_bella \
+  -o /tmp/story.wav -- \
+  "Full story text here."
+
+# Produces:
+#   /tmp/story.wav        (24kHz PCM audio)
+#   /tmp/story.tsv        (word-level timestamps)
+#
+# TSV format: word\tstart_sec\tend_sec
+# Example:
+#   Once    0.00    0.31
+#   upon    0.31    0.58
+#   a       0.58    0.67
+#   time    0.67    1.02
+```
+
+### Paragraph boundary aggregation
+
+The cron job aggregates word timestamps to paragraph boundaries:
+1. Split story text into paragraphs by `\n\n`
+2. Count character offset of each paragraph in the full text
+3. Map each word from the TSV to its paragraph by character range
+4. Paragraph start = `start_sec` of first word in paragraph
+5. Paragraph end = `end_sec` of last word in paragraph
+
+This produces per-paragraph `{paragraphIndex, startMs, endMs}` timing entries from a single Kokoro synthesis call — no audio splitting, no forced alignment, no estimation.
+
+### HTTP API limitation
+
+The OpenAI-compatible server (`/v1/audio/speech`) calls `tts_raw_audio()` which discards the word alignments (`.unwrap().0` in `kokoros-openai/src/lib.rs:791`). The timestamps are **produced** by the engine but **not returned** through the HTTP API. For pre-gen audio, use the CLI directly on the VPS.
 
 ## Streaming Usage
 

@@ -3,7 +3,7 @@ title: Kokoros Current State
 summary: Live deployment status, verification, and remaining integration work for the Kokoros TTS service. Yawnly Edge Function deployed 2026-05-03; en traffic routed via launch-test bypasses.
 type: current-state
 status: canonical
-updated: 2026-05-03
+updated: 2026-05-04
 ---
 
 # Kokoros — Current State
@@ -30,6 +30,8 @@ updated: 2026-05-03
 - `GET /v1/models` returns OpenAI-style model IDs.
 - `POST /v1/audio/speech` generated a valid MP3 through public HTTPS.
 - Requests without the header return Cloudflare `403`.
+- **Word-level timestamps are natively supported** (discovered 2026-05-04). The `--timestamps` CLI flag outputs a TSV sidecar (`word\tstart_sec\tend_sec`) via `tts_timestamped_raw_audio()`. The HTTP API (`/v1/audio/speech`) does NOT expose this — it calls `tts_raw_audio()` which discards the alignments. For pre-gen audio, the cron job should call the CLI directly, parse the TSV, and aggregate word timestamps to paragraph boundaries.
+
 - uint8 deployment verified locally on the VPS: `GET /`, `GET /v1/models`, MP3 generation, and PCM streaming all return `HTTP 200`.
 - Patched runtime path detects the schema (`input_ids -> waveform`) for both `model_quantized.onnx` and `model_uint8.onnx` with no code change.
 - End-to-end streaming through Cloudflare with uint8 verified 2026-05-03: ttfb 0.73s, total 8.78s for 11.30s audio (**RTF 0.78x — faster than realtime**). Direct VPS loopback uint8 multi-sentence: ttfb 0.08s, total 8.56s for 11.30s audio (RTF 0.76x). Local M-series Docker uint8: ttfb 0.03s, total 1.32s for 11.30s audio (RTF 0.12x, ~8x realtime).
