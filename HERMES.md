@@ -3,7 +3,7 @@ title: HERMES.md
 summary: Hermes-specific instructions, defaults, and recorded install state.
 type: meta
 status: canonical
-updated: 2026-05-02
+updated: 2026-05-05
 ---
 
 # HERMES.md — Hermes Operating Instructions
@@ -17,6 +17,20 @@ Read `AGENTS.md` first; this file adds Hermes-specific rules.
 - Branch naming: `hermes/<project>-<task>`.
 - No push to `main`. No force push.
 - Use `inbox/hermes-proposals/` for any wiki update suggestions.
+
+## Agent Handoffs
+
+For implementation delegated to sandboxed coding workers (OpenCode/Codex/etc.), create a durable repo-local handoff doc before launching the worker:
+
+- Path: `<repo>/.hermes/agent-handoff/task-<id-or-short-name>.md`
+- The handoff file/directory is a repo edit and must be listed in the task packet's `Allowed Paths` before Hermes creates or updates it. If the path is missing, stop and ask the human to approve adding it. Repo-local handoffs are not an automatic exception to the `Allowed Paths` rule.
+- Commit only sanitized handoff Markdown under `<repo>/.hermes/agent-handoff/` when useful. Do not commit unrelated `.hermes` runtime state, logs, secrets, or scratch files.
+- The handoff must be detailed enough that the worker can implement without reading MyWiki.
+- The handoff should separate the worker's read-only context path from the worker-editable paths. Workers must not edit the handoff itself unless the task explicitly permits it.
+- Include approved requirements from the MyWiki plan/task packet, Allowed Paths, Stop Conditions, relevant decisions/guidelines, verification commands, and output requirements.
+- Use spec-workflow MCP/process in **design-only** mode when design help is needed. Do not force full requirements/design/tasks specs for small or medium work when the MyWiki plan already captures requirements.
+- Worker agents should break the handoff into an internal checklist and execute step by step. If context is missing, they stop and report instead of guessing.
+- Worker agents must not read or modify MyWiki unless the task explicitly grants that access. Suggested wiki updates return to Hermes and go through `inbox/hermes-proposals/`.
 
 ## Stop Conditions
 

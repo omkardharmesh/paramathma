@@ -5,7 +5,7 @@ type: guideline
 status: canonical
 owner: human
 created: 2026-05-02
-updated: 2026-05-02
+updated: 2026-05-05
 last_verified: 2026-05-02
 applies_to: [global]
 ---
@@ -22,6 +22,27 @@ For substantial implementation specs, truth lives in files, not chat memory:
 - `tasks.md`
 
 A Hermes task packet may request these files as the output of `plan-only` work, or may reference them as required context before implementation.
+
+For lightweight MyWiki-driven implementation, the approved task packet or plan may already contain the requirements. In that case, do not recreate `requirements.md` just to satisfy ceremony. Use the approved plan as the requirements source and request a **design-only** pass when design clarity is the missing piece.
+
+## Lightweight Design-Only Path
+
+Use this path for small and medium implementation tasks where requirements are already clear in the MyWiki plan/task packet, but a sandboxed coding agent still needs implementation design context.
+
+Design-only output should include:
+- Architecture approach and primary flow.
+- Existing files, components, and project patterns to reuse.
+- Files/components likely to change.
+- Data, state, serialization, navigation, threading, or KMP considerations when relevant.
+- Error handling and fallback behavior.
+- Verification strategy and exact pass criteria.
+- Explicit implementation constraints and non-goals.
+
+Design-only output must not introduce new product requirements or broaden scope. If it discovers missing requirements, stop and ask the human or return the missing requirement as an open question.
+
+The design-only output may be embedded into a repo-local handoff doc at `<repo>/.hermes/agent-handoff/task-<id-or-short-name>.md` only when the task packet's `Allowed Paths` permit creating or updating that handoff file. That handoff becomes the sandbox-readable implementation contract for worker agents. Mark the handoff path as read-only worker context unless the task explicitly permits worker edits to it, and keep worker-editable paths separate from read-only context paths. The worker may break the handoff into an internal checklist and execute it; a separate `tasks.md` is only required when the packet asks for it or when the implementation risk justifies it.
+
+Use the full `requirements.md` + `design.md` + `tasks.md` workflow only for large, high-risk, runtime-sensitive, or ambiguous work.
 
 ## Enforcement Contract
 
