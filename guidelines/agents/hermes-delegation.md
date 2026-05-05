@@ -5,7 +5,7 @@ type: guideline
 status: canonical
 owner: human
 created: 2026-05-02
-updated: 2026-05-02
+updated: 2026-05-05
 last_verified: 2026-05-02
 applies_to: [global]
 ---
@@ -63,6 +63,51 @@ Default Telegram mode is `plan-only`. Hermes must not move into `implement-local
 - Claude/Cursor wiki updates go to `inbox/claude-proposals/`.
 - Canonical guidelines and project decisions require human approval.
 - Proposals older than 14 days are promoted, deleted, or archived during weekly maintenance.
+
+## Repo-Local Agent Handoffs
+
+When Hermes delegates implementation to sandboxed workers such as Kimi, OpenCode, Codex, Claude Code, or another coding agent, Hermes must give the worker a repo-local handoff document instead of asking it to read MyWiki directly.
+
+Convention:
+- Handoff directory: `<repo>/.hermes/agent-handoff/`
+- Handoff file: `<repo>/.hermes/agent-handoff/task-<id-or-short-name>.md`
+- The handoff file/directory is a repo edit. The task packet must list the handoff path under `Allowed Paths` before Hermes creates or updates it.
+- If the handoff path is missing from `Allowed Paths`, Hermes must stop and ask the human to approve adding `<repo>/.hermes/agent-handoff/` or the exact handoff file. Repo-local handoffs are not an automatic exception to the `Allowed Paths` rule.
+- Commit only sanitized handoff Markdown under `<repo>/.hermes/agent-handoff/` when useful. Do not commit unrelated `.hermes` runtime state, logs, secrets, or scratch files.
+- MyWiki remains canonical for decisions, planning, task packets, and guidelines. The repo handoff is the sandbox-readable implementation contract for that repo change.
+
+Worker boundary inside the handoff:
+- Label the handoff path as read-only context for the worker unless the task explicitly permits updating it.
+- Keep worker-editable paths separate from read-only context paths.
+- Workers must not edit the handoff itself unless that edit is explicitly allowed.
+
+Handoff docs should be detailed enough that the worker has end-to-end context without reading MyWiki. Include:
+- Source task packet or approved MyWiki plan summary.
+- Mode, branch expectation, Allowed Paths, Non-Goals, Stop Conditions, and Output Required.
+- Requirements / acceptance criteria copied from the approved plan or task packet.
+- Relevant project decisions, constraints, and linked guideline excerpts needed for the task.
+- Design notes when architecture, state, runtime, KMP, API, or data-model risk exists.
+- Verification commands and pass criteria.
+- Worker instruction to break the work into a short internal checklist, execute step by step, and stop instead of guessing when context is missing.
+
+Spec-workflow use is intentionally lightweight for small and medium tasks:
+- Do not force full `requirements.md` + `design.md` + `tasks.md` for every change.
+- If the MyWiki plan or task packet already contains requirements, treat those as the requirements source.
+- Ask the spec-workflow MCP/process for **design only** when design help is useful.
+- Let the worker break the approved handoff into implementation steps unless the task packet explicitly requires a separate tasks file.
+- Use full spec workflow only for large, high-risk, runtime-sensitive, or ambiguous implementation.
+
+Worker boundary:
+- Workers read the repo handoff and repo files only.
+- Workers must not read or modify `/Users/eloelo/Downloads/MyWiki` unless the task explicitly grants that access.
+- Suggested wiki updates come back in the worker report and are handled by Hermes via `inbox/hermes-proposals/`.
+
+Hermes post-run verification:
+- Check `git diff --name-only` against the handoff's Allowed Paths.
+- Confirm the handoff file was only created or updated when its path was allowed by the task packet.
+- Run the handoff's verification commands when possible.
+- Report architecture compliance against the handoff and linked guidelines.
+- Stop and ask the human before accepting edits outside the declared boundary.
 
 ## Hermes Report Format
 
