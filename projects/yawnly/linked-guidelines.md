@@ -37,6 +37,13 @@ updated: 2026-05-03
 - `projects/kokoros/current-state.md`
 - `projects/kokoros/linked-guidelines.md`
 
+## Read for marketing / launch work
+
+- `guidelines/marketing/solo-dev-app-launch-playbook.md` — Generic app-launch template
+- `projects/yawnly-marketing/context.md` — Yawnly marketing context (Marketing Research directory)
+- `projects/yawnly-marketing/linked-guidelines.md` — Marketing-specific guideline links
+- `projects/yawnly-marketing/current-state.md` — Marketing execution status
+
 ## Golden examples
 
 `golden-examples/cmp/` and `golden-examples/supabase/` are launch placeholders. No Yawnly examples have been promoted yet. When a real Yawnly file becomes a clear pattern (e.g. a clean `*ScreenRoot`/`*Screen` pair, a clean `SupabaseBaseRepository` extension, a clean Edge Function), promote it via a wiki proposal.

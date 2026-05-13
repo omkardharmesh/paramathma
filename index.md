@@ -3,7 +3,7 @@ title: LLM Wiki Index
 summary: First-read map for all agents. Links to active projects, global guidelines, and ignore rules.
 type: meta
 status: canonical
-updated: 2026-05-03
+updated: 2026-05-14
 ---
 
 # LLM Wiki Index
@@ -23,6 +23,7 @@ Agents must not recursively load the wiki. See `meta/wikiignore.md`.
 ## Active Projects
 
 - [Yawnly](projects/yawnly/context.md) — Compose Multiplatform bedtime story app. First Hermes pilot.
+- [Yawnly Marketing](projects/yawnly-marketing/context.md) — Post-launch marketing research, launch plans, creative assets, and store listing strategy for Yawnly.
 - [Kokoros](projects/kokoros/context.md) — Self-hosted Kokoro TTS service for Yawnly via Supabase and Cloudflare.
 
 ## Global Guidelines
