@@ -22,9 +22,10 @@ Agents must not recursively load the wiki. See `meta/wikiignore.md`.
 
 ## Active Projects
 
+- [Kokoros](projects/kokoros/context.md) — Self-hosted Kokoro TTS service for Yawnly via Supabase and Cloudflare.
+- [Saarthi](projects/saarthi/context.md) — Backend and data-control-plane for Saarthi’s spiritual chatbot, retrieval, Supabase auth, corpus, deployment APIs, and workflows.
 - [Yawnly](projects/yawnly/context.md) — Compose Multiplatform bedtime story app. First Hermes pilot.
 - [Yawnly Marketing](projects/yawnly-marketing/context.md) — Post-launch marketing research, launch plans, creative assets, and store listing strategy for Yawnly.
-- [Kokoros](projects/kokoros/context.md) — Self-hosted Kokoro TTS service for Yawnly via Supabase and Cloudflare.
 
 ## Global Guidelines
 
@@ -41,6 +42,7 @@ Agents must not recursively load the wiki. See `meta/wikiignore.md`.
 - [Hermes delegation](guidelines/agents/hermes-delegation.md)
 - [Spec workflow](guidelines/agents/spec-workflow.md)
 - [CMP PR review](guidelines/agents/cmp-pr-review.md)
+- [MyWiki project onboarding](guidelines/agents/mywiki-project-onboarding.md)
 
 ## Schemas
 
