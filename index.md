@@ -59,5 +59,6 @@ See `meta/wikiignore.md`.
 
 - Hermes proposals → `inbox/hermes-proposals/`
 - Claude/Cursor proposals → `inbox/claude-proposals/`
-- Quick capture → `inbox/quick-capture/`
+| Quick capture → `inbox/quick-capture/`
+| App ideas → `inbox/app-ideas/` (shortlisted ideas that may graduate to projects)
 - Canonical guidelines/decisions require human approval.
